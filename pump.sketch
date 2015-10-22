@@ -1,0 +1,59 @@
+/*
+acts as a python api for turning pumps on and off.  
+ */
+
+// digital pin 2 has a pushbutton attached to it. Give it a name:
+int pump1 = 10;
+int pump2 = 11;
+int pump3 = 12;
+int pump4 = 9;
+int pump5 = 8;
+char myChar;
+char state1;
+
+// the setup routine runs once when you press reset:
+void setup() {
+  Serial.begin(9600);
+  pinMode(pump1, OUTPUT);
+  pinMode(pump2, OUTPUT);
+  pinMode(pump3, OUTPUT);
+  pinMode(pump4, OUTPUT);
+  pinMode(pump5, OUTPUT);
+  digitalWrite(pump1,HIGH);
+  digitalWrite(pump2,HIGH);
+  digitalWrite(pump3,HIGH);
+  digitalWrite(pump4,HIGH);
+  digitalWrite(pump5,HIGH);
+}
+
+
+void pump_manage(int pump_number, int state, int milisecs = 10000 ) {
+   if(state ==  1) {
+     digitalWrite(pump_number,LOW);
+     Serial.print( "turning pump " );
+     Serial.print( pump_number );
+     Serial.println( " on" );
+     delay(milisecs); 
+     digitalWrite(pump_number,HIGH); 
+   }
+  else { 
+     digitalWrite(pump_number,HIGH);
+     Serial.print( "turning pump " );
+     Serial.print( pump_number );
+     Serial.println( " OFF" );
+  } 
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  while (Serial.available() > 0) {
+    int pmp = Serial.parseInt();
+    int pmpstate = Serial.parseInt(); 
+    int milisecs = Serial.parseInt(); 
+
+    if (Serial.read() == '\n') {
+
+      pump_manage(pmp, pmpstate, milisecs);
+    }
+  } 
+}

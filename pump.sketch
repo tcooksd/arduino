@@ -1,5 +1,4 @@
 /*
-acts as a python api for turning pumps on and off.  
  */
 
 // digital pin 2 has a pushbutton attached to it. Give it a name:
@@ -27,14 +26,16 @@ void setup() {
 }
 
 
-void pump_manage(int pump_number, int state, int milisecs = 10000 ) {
+void pump_manage(int pump_number, int state, int milisecs) {
    if(state ==  1) {
      digitalWrite(pump_number,LOW);
      Serial.print( "turning pump " );
      Serial.print( pump_number );
      Serial.println( " on" );
-     delay(milisecs); 
-     digitalWrite(pump_number,HIGH); 
+     if(milisecs > 100) {
+       delay(milisecs);
+       digitalWrite(pump_number,HIGH);
+     }
    }
   else { 
      digitalWrite(pump_number,HIGH);
@@ -57,3 +58,4 @@ void loop() {
     }
   } 
 }
+
